@@ -129,7 +129,6 @@ public class BooksController {
     public BookDTO updateBook(@RequestBody BookDTO bookDTO,@PathVariable("bookId") Long idBook) {
         if (bookDTO.id() != idBook) {
           System.err.println("The book could not be validated");
-
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
       }
 
@@ -152,28 +151,22 @@ public class BooksController {
 
           throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
       }
-
       return this.booksMapper.entityToDTO(updatedBook);
     }
 
 
-    public BookDTO updateBook(Long authorId, BookDTO book) {
-        // attention BookDTO.id() doit être égale à id, sinon la requête utilisateur est mauvaise
-        return null;
-    }
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/books/{newBookId}")
     public void deleteBook(@PathVariable("newBookId") Long id) {
-      Book book = null;
-      try {
-        book = this.bookService.get(id);
-     } catch(EntityNotFoundException e) {
-        System.err.println("The book was not found");
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-     }
-     try {
-      this.bookService.delete(id);
+    Book book = null;
+    try {
+      book = this.bookService.get(id);
+    } catch(EntityNotFoundException e) {
+      System.err.println("The book was not found");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    try {
+     this.bookService.delete(id);
     } catch (EntityNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
