@@ -127,9 +127,7 @@ public class AuthorsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("authors/{id}")
     public void deleteAuthor(@PathVariable Long id) {
-        
          Author author = null;
-
          try {
             author = this.authorService.get(id);
          } catch(EntityNotFoundException e) {
@@ -139,12 +137,9 @@ public class AuthorsController {
          }
          try {
             this.authorService.delete(id);
-            System.err.println("fvbdfbdfbfbz");
         } catch (EntityNotFoundException e) {
-            System.err.println("JE SUIS DANS ENTITY");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } catch (DeleteAuthorException e) {
-            System.err.println("JE SUIS DANS AUTHOR AUTORITY");
             System.err.println("this author share authority on a book, then book should be removed first");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }    

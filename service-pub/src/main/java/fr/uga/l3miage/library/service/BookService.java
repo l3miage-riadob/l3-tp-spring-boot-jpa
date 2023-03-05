@@ -64,5 +64,5 @@ public interface BookService extends BaseService<Book, Long> {
      */
     Book addAuthor(Long bookId, Long authorId) throws EntityNotFoundException;
 
-    Collection<Book> searchByName(String query);
+    
 }

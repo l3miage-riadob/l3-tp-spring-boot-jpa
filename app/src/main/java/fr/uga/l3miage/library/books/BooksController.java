@@ -7,6 +7,7 @@ import fr.uga.l3miage.library.service.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -161,9 +162,22 @@ public class BooksController {
         return null;
     }
 
-    public void deleteBook(Long id) {
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/books/{newBookId}")
+    public void deleteBook(@PathVariable("newBookId") Long id) {
+      Book book = null;
+      try {
+        book = this.bookService.get(id);
+     } catch(EntityNotFoundException e) {
+        System.err.println("The book was not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+     }
+     try {
+      this.bookService.delete(id);
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+  }
 
 
     public void addAuthor(Long authorId, AuthorDTO author) {
